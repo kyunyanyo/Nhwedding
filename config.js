@@ -48,15 +48,40 @@ const CONFIG = {
   },
 
   wedding: {
-    date: "2026-07-24",
+    date: "2026-08-02",
     time: "11:00",
-    venue: "♥ 괴산농협웨딩홀 ♥",
-    hall: "괴산농협웨딩홀 4층",
-    address: "충북 괴산군 읍내로16길 19, 농협예식장",
-    tel: "043-834-8908",
+    venue: "♥ 아펠가모 공덕 ♥",
+    hall: "라로브홀 7층",
+    address: "서울특별시 마포대로92, 효성헤링턴스퀘어 B동",
+    tel: "02-2197-0230",
     mapLinks: {
-      kakao: "https://kko.to/zZwUre7h3o",
-      naver: "https://naver.me/5g4XtyID"
+      kakao: "https://kko.to/lnbjOw_ws6",
+      naver: "https://naver.me/GYDc9MvY"
+    }
+  },
+
+  // ── 메인 장소 아래 피로연 안내 ──
+  reception: {
+    enabled: true,
+    label: "피로연 안내",
+    dateText: "2026. 7월 24일 금요일",
+    timeText: "11:00 ~ 14:00",
+    venue: "괴산농협예식장",
+    decoration: "✦"
+  },
+
+  // ── 피로연 오시는 길 ──
+  receptionLocation: {
+    enabled: true,
+    title: "피로연 오시는 길",
+    venue: "괴산농협예식장",
+    hall: "",
+    address: "충북 괴산군 괴산읍 읍내로16길 19",
+    tel: "043-834-8908",
+    mapImage: "images/location/reception-map.jpg",
+    mapLinks: {
+      kakao: "https://map.kakao.com/link/search/괴산농협예식장",
+      naver: "https://map.naver.com/p/search/괴산농협예식장"
     }
   },
 
@@ -74,10 +99,12 @@ const CONFIG = {
 
   // ── 마음 전하실 곳 ──
   accounts: {
-    notice: "",
+    notice: "식장의 규정에 따라 화환은 정중히 사양합니다.\n축하의 마음만 감사히 받겠습니다.",
 
     groom: [
-      // 신랑측 계좌 항목 숨김 처리
+      { role: "신랑", name: "이규현", bank: "국민은행", number: "387202-01-112227" },
+      { role: "아버지", name: "이홍열", bank: "우리은행", number: "1002-529-158996" },
+      { role: "어머니", name: "권미숙", bank: "농협은행", number: "1147-02-072345" }
     ],
     bride: [
       { role: "신부", name: "신민지", bank: "카카오뱅크", number: "3333-05-0316406" },

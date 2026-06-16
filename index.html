@@ -8,7 +8,7 @@
   <!-- Meta / OG tags - config.js 값으로 script에서 동적 설정 -->
   <meta property="og:type" content="website">
   <meta property="og:title" content="규현 ♥ 민지 결혼합니다">
-  <meta property="og:description" content="2026.07.24.11:00 괴산농협예식장">
+  <meta property="og:description" content="2026.08.02.11:00 아펠가모공덕 라로브홀">
   <meta property="og:image" content="https://kyunyanyo.github.io/minigyunya/images/og/1.jpg">
   <meta name="description" content="">
 
@@ -156,6 +156,72 @@
       width: 100% !important;
       display: block !important;
     }
+
+
+    /* 메인 장소 바로 아래 피로연 안내 장식 */
+    .hero__reception {
+      display: inline-block;
+      margin: 12px auto 0;
+      padding: 8px 18px 9px;
+      font-family: var(--hero-reception-font-family, inherit);
+      font-size: var(--hero-reception-font-size, 0.86rem);
+      font-weight: var(--hero-reception-font-weight, 500);
+      line-height: 1.7;
+      letter-spacing: var(--hero-reception-letter-spacing, 0.02em);
+      color: var(--hero-reception-main-color, currentColor);
+      border-top: 1px solid var(--hero-reception-main-color, currentColor);
+      border-bottom: 1px solid var(--hero-reception-main-color, currentColor);
+      background: rgba(255, 255, 255, 0.38);
+      box-sizing: border-box;
+    }
+
+    .hero__reception[hidden] {
+      display: none !important;
+    }
+
+    .hero__reception-title,
+    .hero__reception-time,
+    .hero__reception-venue {
+      display: block;
+      font-family: var(--hero-reception-font-family, inherit);
+      font-size: var(--hero-reception-font-size, inherit);
+      font-weight: var(--hero-reception-font-weight, 500);
+      color: var(--hero-reception-main-color, currentColor);
+      letter-spacing: var(--hero-reception-letter-spacing, 0.02em);
+    }
+
+    /* ✦피로연 안내✦는 위 장소명(♥ 아펠가모 공덕 ♥)과 크기까지 동일하게 고정 */
+    .hero__reception-title,
+    .hero__reception-deco {
+      font-size: var(--hero-reception-title-font-size, var(--hero-reception-font-size, inherit)) !important;
+    }
+
+    .hero__reception-deco {
+      display: inline-block;
+      margin: 0 7px;
+      font-family: var(--hero-reception-font-family, inherit);
+      font-weight: var(--hero-reception-font-weight, 500);
+      color: var(--hero-reception-main-color, currentColor);
+      vertical-align: 1px;
+    }
+
+    .hero__reception-time,
+    .hero__reception-venue {
+      white-space: nowrap;
+    }
+
+
+    /* 피로연 오시는 길: 기존 오시는 길과 동일한 포맷으로 사용 */
+    .reception-location[hidden] {
+      display: none !important;
+    }
+
+    .reception-location .location__map-img[hidden],
+    .reception-location .location__hall[hidden],
+    .reception-location .location__tel[hidden],
+    .reception-location .location__address[hidden] {
+      display: none !important;
+    }
   </style>
   <script src="config.js"></script>
 </head>
@@ -195,6 +261,7 @@
         <h1 class="hero__names animate-item" data-animate="fade-up" id="heroNames"></h1>
         <p class="hero__date animate-item" data-animate="fade-up" id="heroDate"></p>
         <p class="hero__venue animate-item" data-animate="fade-up" id="heroVenue"></p>
+        <p class="hero__reception animate-item" data-animate="fade-up" id="heroReception" hidden></p>
       </div>
 
       <!-- Countdown -->
@@ -293,6 +360,28 @@
       </div>
     </section>
 
+    <!-- Reception Location Section -->
+    <section class="section location reception-location" id="receptionLocation" hidden>
+      <div class="section__inner">
+        <h2 class="section__title animate-item" data-animate="fade-up" id="receptionLocationTitle">피로연 오시는 길</h2>
+        <div class="section__divider animate-item" data-animate="fade-in"></div>
+        <div class="location__info animate-item" data-animate="fade-up">
+          <p class="location__venue" id="receptionLocationVenue"></p>
+          <p class="location__hall" id="receptionLocationHall" hidden></p>
+          <p class="location__address" id="receptionLocationAddress"></p>
+          <p class="location__tel" id="receptionLocationTel"></p>
+        </div>
+        <button class="btn btn--text location__copy animate-item" data-animate="fade-up" id="copyReceptionAddressBtn">주소 복사</button>
+        <div class="location__map animate-item" data-animate="fade-in" id="receptionLocationMapWrap">
+          <img class="location__map-img" id="receptionLocationMapImg" src="" alt="피로연 약도" loading="lazy">
+        </div>
+        <div class="location__links animate-item" data-animate="fade-up">
+          <a class="btn btn--outline" id="receptionKakaoMapBtn" href="#" target="_blank" rel="noopener">카카오맵</a>
+          <a class="btn btn--outline" id="receptionNaverMapBtn" href="#" target="_blank" rel="noopener">네이버지도</a>
+        </div>
+      </div>
+    </section>
+
     <!-- Calendar Actions -->
     <section class="section calendar-section" id="calendarSection">
       <div class="section__inner">
@@ -311,13 +400,13 @@
       <div class="section__inner">
         <h2 class="section__title animate-item" data-animate="fade-up">마음 전하실 곳</h2>
         <div class="section__divider animate-item" data-animate="fade-in"></div>
-        <p class="account__desc animate-item" data-animate="fade-up" hidden style="display:none;">
+        <p class="account__desc animate-item" data-animate="fade-up">
           식장의 규정에 따라 화환은 정중히 사양합니다.<br>
           좋은 마음만 감사히 받겠습니다.
         </p>
 
-        <!-- Groom Accounts: 숨김 처리 -->
-        <div class="accordion animate-item" data-animate="fade-up" hidden style="display:none;">
+        <!-- Groom Accounts -->
+        <div class="accordion animate-item" data-animate="fade-up">
           <button class="accordion__trigger" id="groomAccordion" aria-expanded="false">
             <span>신랑측 계좌번호</span>
             <span class="accordion__arrow">&#8964;</span>
@@ -373,6 +462,236 @@
   </script>
 
   <script src="script.js"></script>
+
+
+  <script>
+    // CONFIG.reception 값으로 메인 장소 바로 아래 피로연 안내를 표시합니다.
+    (function () {
+      function escapeHtml(value) {
+        return String(value || '').replace(/[&<>"]/g, function (char) {
+          return {
+            '&': '&amp;',
+            '<': '&lt;',
+            '>': '&gt;',
+            '"': '&quot;'
+          }[char];
+        });
+      }
+
+      function initHeroReception() {
+        if (typeof CONFIG === 'undefined') return;
+
+        var reception = CONFIG.reception || {};
+        var el = document.getElementById('heroReception');
+        if (!el) return;
+
+        if (reception.enabled === false) {
+          el.setAttribute('hidden', 'hidden');
+          el.innerHTML = '';
+          return;
+        }
+
+        var decoration = reception.decoration || '✦';
+        var label = reception.label || '피로연 안내';
+        var dateText = reception.dateText || '';
+        var timeText = reception.timeText || '';
+        var venue = reception.venue || '';
+        var dateTimeText = [dateText, timeText].filter(Boolean).join(' ');
+
+        if (!dateTimeText && !venue) {
+          el.setAttribute('hidden', 'hidden');
+          el.innerHTML = '';
+          return;
+        }
+
+        var venueEl = document.getElementById('heroVenue');
+        if (venueEl && window.getComputedStyle) {
+          var venueStyle = window.getComputedStyle(venueEl);
+          el.style.setProperty('--hero-reception-main-color', venueStyle.color);
+          el.style.setProperty('--hero-reception-font-family', venueStyle.fontFamily);
+          el.style.setProperty('--hero-reception-font-size', venueStyle.fontSize);
+          el.style.setProperty('--hero-reception-title-font-size', venueStyle.fontSize);
+          el.style.setProperty('--hero-reception-font-weight', venueStyle.fontWeight);
+          el.style.setProperty('--hero-reception-letter-spacing', venueStyle.letterSpacing);
+        }
+
+        el.innerHTML =
+          '<span class="hero__reception-title">' +
+            '<span class="hero__reception-deco">' + escapeHtml(decoration) + '</span>' +
+            escapeHtml(label) +
+            '<span class="hero__reception-deco">' + escapeHtml(decoration) + '</span>' +
+          '</span>' +
+          (dateTimeText ? '<span class="hero__reception-time">' + escapeHtml(dateTimeText) + '</span>' : '') +
+          (venue ? '<span class="hero__reception-venue">' + escapeHtml(venue) + '</span>' : '');
+        el.removeAttribute('hidden');
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initHeroReception);
+      } else {
+        initHeroReception();
+      }
+      window.addEventListener('load', initHeroReception);
+    })();
+  </script>
+
+
+  <script>
+    // CONFIG.receptionLocation 값으로 "피로연 오시는 길" 섹션을 표시합니다.
+    (function () {
+      function escapeHtml(value) {
+        return String(value || '').replace(/[&<>"]/g, function (char) {
+          return {
+            '&': '&amp;',
+            '<': '&lt;',
+            '>': '&gt;',
+            '"': '&quot;'
+          }[char];
+        });
+      }
+
+      function showToast(message) {
+        var toast = document.getElementById('toast');
+        if (!toast) {
+          alert(message);
+          return;
+        }
+
+        toast.textContent = message;
+        toast.classList.add('toast--show');
+        window.clearTimeout(showToast.timer);
+        showToast.timer = window.setTimeout(function () {
+          toast.classList.remove('toast--show');
+        }, 1800);
+      }
+
+      function setText(id, value, hideWhenEmpty) {
+        var el = document.getElementById(id);
+        if (!el) return;
+
+        if (!value && hideWhenEmpty) {
+          el.setAttribute('hidden', 'hidden');
+          el.textContent = '';
+          return;
+        }
+
+        el.removeAttribute('hidden');
+        el.textContent = value || '';
+      }
+
+      function setLink(id, href) {
+        var el = document.getElementById(id);
+        if (!el) return;
+
+        if (!href) {
+          el.setAttribute('hidden', 'hidden');
+          el.removeAttribute('href');
+          return;
+        }
+
+        el.removeAttribute('hidden');
+        el.href = href;
+      }
+
+      function copyText(value) {
+        if (!value) return;
+
+        if (navigator.clipboard && window.isSecureContext) {
+          navigator.clipboard.writeText(value).then(function () {
+            showToast('주소가 복사되었습니다');
+          }).catch(function () {
+            fallbackCopy(value);
+          });
+          return;
+        }
+
+        fallbackCopy(value);
+      }
+
+      function fallbackCopy(value) {
+        var temp = document.createElement('textarea');
+        temp.value = value;
+        temp.setAttribute('readonly', 'readonly');
+        temp.style.position = 'fixed';
+        temp.style.left = '-9999px';
+        document.body.appendChild(temp);
+        temp.select();
+
+        try {
+          document.execCommand('copy');
+          showToast('주소가 복사되었습니다');
+        } catch (error) {
+          showToast('주소 복사에 실패했습니다');
+        }
+
+        document.body.removeChild(temp);
+      }
+
+      function initReceptionLocation() {
+        if (typeof CONFIG === 'undefined') return;
+
+        var data = CONFIG.receptionLocation || {};
+        var section = document.getElementById('receptionLocation');
+        if (!section) return;
+
+        if (data.enabled === false) {
+          section.setAttribute('hidden', 'hidden');
+          return;
+        }
+
+        var title = data.title || '피로연 오시는 길';
+        var venue = data.venue || '';
+        var hall = data.hall || '';
+        var address = data.address || '';
+        var tel = data.tel || '';
+        var mapImage = data.mapImage || data.map || '';
+        var mapLinks = data.mapLinks || {};
+
+        setText('receptionLocationTitle', title, false);
+        setText('receptionLocationVenue', venue, false);
+        setText('receptionLocationHall', hall, true);
+        setText('receptionLocationAddress', address, true);
+        setText('receptionLocationTel', tel ? 'Tel. ' + tel : '', true);
+
+        var mapWrap = document.getElementById('receptionLocationMapWrap');
+        var mapImg = document.getElementById('receptionLocationMapImg');
+        if (mapImg && mapWrap) {
+          if (mapImage) {
+            mapImg.src = mapImage;
+            mapImg.alt = (venue || '피로연') + ' 약도';
+            mapWrap.removeAttribute('hidden');
+          } else {
+            mapImg.removeAttribute('src');
+            mapWrap.setAttribute('hidden', 'hidden');
+          }
+        }
+
+        setLink('receptionKakaoMapBtn', mapLinks.kakao || '');
+        setLink('receptionNaverMapBtn', mapLinks.naver || '');
+
+        var copyBtn = document.getElementById('copyReceptionAddressBtn');
+        if (copyBtn) {
+          if (address) {
+            copyBtn.removeAttribute('hidden');
+            copyBtn.onclick = function () {
+              copyText(address);
+            };
+          } else {
+            copyBtn.setAttribute('hidden', 'hidden');
+          }
+        }
+
+        section.removeAttribute('hidden');
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initReceptionLocation);
+      } else {
+        initReceptionLocation();
+      }
+      window.addEventListener('load', initReceptionLocation);
+    })();
+  </script>
 
   <script>
     // CONFIG.introFixedImage 설정값으로 Love Story 아래에 추가 이미지를 표시합니다.
