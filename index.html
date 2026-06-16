@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="format-detection" content="telephone=no">
+
+  <!-- Meta / OG tags - config.js 값으로 script에서 동적 설정 -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="규현 ♥ 민지 결혼합니다">
+  <meta property="og:description" content="2026.08.02.11:00 아펠가모공덕 라로브홀">
+  <meta property="og:image" content="https://kyunyanyo.github.io/minigyunya/images/og/1.jpg">
+  <meta name="description" content="">
+
+  <title>Wedding Invitation</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="styles.css">
+
+  <!-- Love Story 관련 이미지 선로딩: 스크롤 시 지연 없이 빠르게 현출되도록 설정 -->
+  <link rel="preload" as="image" href="images/intro/between-greeting-story.jpg" fetchpriority="high">
+  <link rel="preload" as="image" href="images/hero/fixed.jpg" fetchpriority="high">
+  <!-- 첫 방문/캐시 없음 상태에서 Love Story 첫 이미지들이 늦게 뜨는 것을 줄이기 위한 낮은 우선순위 선로딩 -->
+  <link rel="preload" as="image" href="images/story/1.jpg" fetchpriority="low">
+  <link rel="preload" as="image" href="images/story/2.jpg" fetchpriority="low">
+  <link rel="preload" as="image" href="images/story/3.jpg" fetchpriority="low">
+  <!-- 갤러리는 아래쪽 영역이라 prefetch로 조용히 미리 받아두어 빠른 스크롤 시 지연을 줄임 -->
+  <link rel="prefetch" as="image" href="images/gallery/1.jpg">
+  <link rel="prefetch" as="image" href="images/gallery/2.jpg">
+  <link rel="prefetch" as="image" href="images/gallery/3.jpg">
+  <link rel="prefetch" as="image" href="images/gallery/4.jpg">
+  <link rel="prefetch" as="image" href="images/gallery/5.jpg">
+  <link rel="prefetch" as="image" href="images/gallery/6.jpg">
+
+  <style>
+    /* Love Story 아래 고정 이미지 + 인사말/Love Story 사이 기존 이미지 */
+    .intro-fixed-image {
+      width: var(--intro-fixed-width, 100%);
+      max-width: var(--intro-fixed-max-width, 100%);
+      margin: var(--intro-fixed-margin, 0 auto);
+      padding: var(--intro-fixed-padding, 0 24px);
+      transform: translate(var(--intro-fixed-x, 0px), var(--intro-fixed-y, 0px));
+      overflow: hidden;
+      border-radius: var(--intro-fixed-radius, 0px);
+      background: transparent;
+      box-sizing: border-box;
+    }
+
+    .intro-fixed-image-section {
+      display: block;
+      padding-top: 0;
+      padding-bottom: 32px;
+      margin-top: 0;
+      overflow: hidden;
+      position: relative;
+      z-index: 1;
+      background: transparent;
+    }
+
+    /* Love Story 배경 바로 아래에 hero/fixed 이미지가 붙어서 보이도록 상단 여백 제거 */
+    #introFixedImageSection,
+    #introFixedImageSection .section__inner,
+    #introFixedImageBlock {
+      margin-top: 0 !important;
+      padding-top: 0 !important;
+    }
+
+    .intro-fixed-image-section[hidden],
+    .intro-fixed-image[hidden] {
+      display: none !important;
+    }
+
+    .intro-fixed-image__photo {
+      display: block;
+      width: 100%;
+      height: var(--intro-fixed-height, auto);
+      object-fit: var(--intro-fixed-fit, contain);
+      object-position: var(--intro-fixed-position, center center);
+      border-radius: inherit;
+    }
+
+
+    .between-greeting-story-image-section {
+      display: block;
+      padding-top: 0;
+      padding-bottom: 32px;
+      overflow: hidden;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* 인사말과 Love Story 사이 이미지는 스크롤 애니메이션을 끄고 바로 고정 표시하여
+       Love Story 제목 애니메이션과 겹쳐 보이지 않게 처리 */
+    #betweenGreetingStoryImageBlock {
+      opacity: 1 !important;
+      transform: translate(var(--intro-fixed-x, 0px), var(--intro-fixed-y, 0px)) !important;
+      transition: none !important;
+    }
+
+    .between-greeting-story-image-section[hidden] {
+      display: none !important;
+    }
+
+
+    /* Love Story 섹션 배경색 */
+    #story.story {
+      background-color: #ae222d;
+    }
+
+    /* 배경색 변경 후 문구가 잘 보이도록 Love Story 텍스트만 밝게 처리 */
+    #story .section__title,
+    #story .story__text {
+      color: #ffffff;
+    }
+
+    /* Love Story 제목 아래 밑줄 제거 */
+    #story .section__divider {
+      display: none !important;
+    }
+
+    /* Love Story 섹션과 아래 hero/fixed 이미지 섹션 사이의 간격 제거 */
+    #story {
+      margin-bottom: 0 !important;
+    }
+
+    #story + #introFixedImageSection {
+      margin-top: 0 !important;
+      padding-top: 0 !important;
+    }
+
+    /* Love Story 아래 images/hero/fixed 이미지는 좌우 여백 없이 전체 폭으로 현출 */
+    #introFixedImageSection .section__inner {
+      width: 100% !important;
+      max-width: none !important;
+      margin-left: 0 !important;
+      margin-right: 0 !important;
+      padding-left: 0 !important;
+      padding-right: 0 !important;
+    }
+
+    #introFixedImageBlock {
+      width: 100% !important;
+      max-width: none !important;
+      margin-left: 0 !important;
+      margin-right: 0 !important;
+      padding-left: 0 !important;
+      padding-right: 0 !important;
+      border-radius: 0 !important;
+    }
+
+    #introFixedImage {
+      width: 100% !important;
+      display: block !important;
+    }
+  </style>
+  <script src="config.js"></script>
+</head>
+<body>
+
+  <!-- ─── Curtain (Simple Overlay) ─── -->
+  <div id="curtain" class="curtain">
+    <div class="curtain__content">
+      <p class="curtain__names" id="curtainNames"></p>
+      <button class="curtain__btn" id="curtainBtn">열기</button>
+    </div>
+  </div>
+
+  <!-- ─── Toast Notification ─── -->
+  <div id="toast" class="toast" aria-live="polite"></div>
+
+  <!-- ─── Photo Viewer Modal ─── -->
+  <div id="photoModal" class="photo-modal" role="dialog" aria-modal="true" aria-label="사진 보기">
+    <button class="photo-modal__close" id="modalClose" aria-label="닫기">&times;</button>
+    <button class="photo-modal__nav photo-modal__nav--prev" id="modalPrev" aria-label="이전 사진">&#8249;</button>
+    <button class="photo-modal__nav photo-modal__nav--next" id="modalNext" aria-label="다음 사진">&#8250;</button>
+    <div class="photo-modal__container" id="modalContainer">
+      <img class="photo-modal__img" id="modalImg" src="" alt="사진" draggable="false">
+    </div>
+    <div class="photo-modal__counter" id="modalCounter"></div>
+  </div>
+
+  <!-- ─── Main Content ─── -->
+  <main id="mainContent" class="main-content">
+
+    <!-- Hero Section -->
+    <section class="section hero" id="hero">
+      <div class="hero__photo-wrap">
+        <img class="hero__photo" id="heroPhoto" src="" alt="웨딩 사진" loading="eager">
+      </div>
+      <div class="hero__content">
+        <h1 class="hero__names animate-item" data-animate="fade-up" id="heroNames"></h1>
+        <p class="hero__date animate-item" data-animate="fade-up" id="heroDate"></p>
+        <p class="hero__venue animate-item" data-animate="fade-up" id="heroVenue"></p>
+      </div>
+
+      <!-- Countdown -->
+      <div class="countdown animate-item" data-animate="fade-up" id="countdown">
+        <p class="countdown__label" id="countdownLabel"></p>
+        <div class="countdown__timer">
+          <div class="countdown__item">
+            <span class="countdown__number" id="countDays">0</span>
+            <span class="countdown__unit">일</span>
+          </div>
+          <div class="countdown__sep">:</div>
+          <div class="countdown__item">
+            <span class="countdown__number" id="countHours">0</span>
+            <span class="countdown__unit">시간</span>
+          </div>
+          <div class="countdown__sep">:</div>
+          <div class="countdown__item">
+            <span class="countdown__number" id="countMinutes">0</span>
+            <span class="countdown__unit">분</span>
+          </div>
+          <div class="countdown__sep">:</div>
+          <div class="countdown__item">
+            <span class="countdown__number" id="countSeconds">0</span>
+            <span class="countdown__unit">초</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Greeting Section -->
+    <section class="section greeting" id="greeting">
+      <div class="section__inner">
+        <h2 class="section__title animate-item" data-animate="fade-up" id="greetingTitle"></h2>
+        <div class="section__divider animate-item" data-animate="fade-in"></div>
+        <p class="greeting__text animate-item" data-animate="fade-up" id="greetingContent"></p>
+        <div class="greeting__parents animate-item" data-animate="fade-up" id="greetingParents"></div>
+      </div>
+    </section>
+
+    <!-- Greeting과 Love Story 사이 기존 고정 이미지 -->
+    <section class="section between-greeting-story-image-section" id="betweenGreetingStoryImageSection" hidden>
+      <div class="section__inner">
+        <div class="intro-fixed-image" id="betweenGreetingStoryImageBlock">
+          <img class="intro-fixed-image__photo" id="betweenGreetingStoryImage" src="" alt="웨딩 사진" loading="eager" fetchpriority="high" decoding="async">
+        </div>
+      </div>
+    </section>
+
+    <!-- Story Section -->
+    <section class="section story" id="story">
+      <div class="section__inner">
+        <h2 class="section__title animate-item" data-animate="fade-up" id="storyTitle"></h2>
+        <div class="section__divider animate-item" data-animate="fade-in"></div>
+        <p class="story__text animate-item" data-animate="fade-up" id="storyContent"></p>
+        <div class="story__photos" id="storyPhotos"></div>
+      </div>
+    </section>
+
+    <!-- Love Story 아래 고정 이미지 -->
+    <section class="section intro-fixed-image-section" id="introFixedImageSection" hidden>
+      <div class="section__inner">
+        <div class="intro-fixed-image" id="introFixedImageBlock">
+          <img class="intro-fixed-image__photo" id="introFixedImage" src="" alt="웨딩 사진" loading="eager" fetchpriority="high" decoding="async">
+        </div>
+      </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section class="section gallery" id="gallery">
+      <div class="section__inner">
+        <h2 class="section__title animate-item" data-animate="fade-up">갤러리</h2>
+        <div class="section__divider animate-item" data-animate="fade-in"></div>
+        <div class="gallery__grid" id="galleryGrid"></div>
+      </div>
+    </section>
+
+    <!-- Location Section -->
+    <section class="section location" id="location">
+      <div class="section__inner">
+        <h2 class="section__title animate-item" data-animate="fade-up">오시는 길</h2>
+        <div class="section__divider animate-item" data-animate="fade-in"></div>
+        <div class="location__info animate-item" data-animate="fade-up">
+          <p class="location__venue" id="locationVenue"></p>
+          <p class="location__hall" id="locationHall"></p>
+          <p class="location__address" id="locationAddress"></p>
+          <p class="location__tel" id="locationTel"></p>
+        </div>
+        <button class="btn btn--text location__copy animate-item" data-animate="fade-up" id="copyAddressBtn">주소 복사</button>
+        <div class="location__map animate-item" data-animate="fade-in">
+          <img class="location__map-img" id="locationMapImg" src="" alt="약도" loading="lazy">
+        </div>
+        <div class="location__links animate-item" data-animate="fade-up">
+          <a class="btn btn--outline" id="kakaoMapBtn" href="#" target="_blank" rel="noopener">카카오맵</a>
+          <a class="btn btn--outline" id="naverMapBtn" href="#" target="_blank" rel="noopener">네이버지도</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Calendar Actions -->
+    <section class="section calendar-section" id="calendarSection">
+      <div class="section__inner">
+        <h2 class="section__title animate-item" data-animate="fade-up">예식 일시</h2>
+        <div class="section__divider animate-item" data-animate="fade-in"></div>
+        <div class="calendar animate-item" data-animate="fade-up" id="calendarGrid"></div>
+        <div class="calendar-actions animate-item" data-animate="fade-up">
+          <a class="btn btn--outline" id="googleCalBtn" href="#" target="_blank" rel="noopener">Google 캘린더</a>
+          <button class="btn btn--outline" id="icsDownloadBtn">Apple 캘린더</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Account Section (축의금) -->
+    <section class="section account" id="account">
+      <div class="section__inner">
+        <h2 class="section__title animate-item" data-animate="fade-up">마음 전하실 곳</h2>
+        <div class="section__divider animate-item" data-animate="fade-in"></div>
+        <p class="account__desc animate-item" data-animate="fade-up" hidden style="display:none;">
+          식장의 규정에 따라 화환은 정중히 사양합니다.<br>
+          좋은 마음만 감사히 받겠습니다.
+        </p>
+
+        <!-- Groom Accounts: 숨김 처리 -->
+        <div class="accordion animate-item" data-animate="fade-up" hidden style="display:none;">
+          <button class="accordion__trigger" id="groomAccordion" aria-expanded="false">
+            <span>신랑측 계좌번호</span>
+            <span class="accordion__arrow">&#8964;</span>
+          </button>
+          <div class="accordion__panel" id="groomAccordionPanel">
+            <div class="accordion__panel-inner" id="groomAccountList"></div>
+          </div>
+        </div>
+
+        <!-- Bride Accounts -->
+        <div class="accordion animate-item" data-animate="fade-up">
+          <button class="accordion__trigger" id="brideAccordion" aria-expanded="false">
+            <span>신부측 계좌번호</span>
+            <span class="accordion__arrow">&#8964;</span>
+          </button>
+          <div class="accordion__panel" id="brideAccordionPanel">
+            <div class="accordion__panel-inner" id="brideAccountList"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <p class="footer__text" id="footerText"></p>
+    </footer>
+
+  </main>
+
+
+
+  <script>
+    // Love Story 관련 이미지를 미리 요청해서 스크롤 시 로딩 딜레이를 줄입니다.
+    (function () {
+      var preloadTargets = [
+        'images/intro/between-greeting-story.jpg',
+        'images/intro/between-greeting-story.png',
+        'images/intro/between-greeting-story.webp',
+        'images/hero/fixed.jpg',
+        'images/hero/fixed.png',
+        'images/hero/fixed.webp',
+        'images/story/1.jpg',
+        'images/story/2.jpg',
+        'images/story/3.jpg'
+      ];
+
+      preloadTargets.forEach(function (src) {
+        var image = new Image();
+        image.decoding = 'async';
+        image.src = src;
+      });
+    })();
+  </script>
+
+  <script src="script.js"></script>
+
+  <script>
+    // CONFIG.introFixedImage 설정값으로 Love Story 아래에 추가 이미지를 표시합니다.
+    (function () {
+      function setCssVar(element, name, value) {
+        if (value !== undefined && value !== null && value !== '') {
+          element.style.setProperty(name, value);
+        }
+      }
+
+      function initIntroFixedImage() {
+        if (typeof CONFIG === 'undefined') return;
+
+        var section = document.getElementById('introFixedImageSection');
+        var block = document.getElementById('introFixedImageBlock');
+        var img = document.getElementById('introFixedImage');
+        var story = document.getElementById('story');
+
+        var fixedImage = CONFIG.introFixedImage || {};
+        var imageSrc = fixedImage.src || fixedImage.image || fixedImage.path || '';
+
+        if (!section || !block || !img || fixedImage.enabled !== true) {
+          if (section) section.setAttribute('hidden', 'hidden');
+          return;
+        }
+
+        // 정확한 위치: Love Story 섹션 바로 아래, 갤러리 섹션 바로 위
+        if (story && story.parentNode && section.previousElementSibling !== story) {
+          story.insertAdjacentElement('afterend', section);
+        }
+
+        img.alt = fixedImage.alt || '웨딩 사진';
+        img.loading = 'eager';
+        img.decoding = 'async';
+        img.setAttribute('fetchpriority', 'high');
+
+        setCssVar(block, '--intro-fixed-width', fixedImage.width || '100%');
+        setCssVar(block, '--intro-fixed-max-width', fixedImage.maxWidth || '100%');
+        setCssVar(block, '--intro-fixed-margin', fixedImage.margin || '0 auto');
+        setCssVar(block, '--intro-fixed-padding', fixedImage.padding || '0 24px');
+        setCssVar(block, '--intro-fixed-x', fixedImage.x || '0px');
+        setCssVar(block, '--intro-fixed-y', fixedImage.y || '0px');
+        setCssVar(block, '--intro-fixed-radius', fixedImage.radius || '0px');
+        setCssVar(img, '--intro-fixed-height', fixedImage.height || 'auto');
+        setCssVar(img, '--intro-fixed-fit', fixedImage.objectFit || 'contain');
+        setCssVar(img, '--intro-fixed-position', fixedImage.objectPosition || 'center center');
+
+        // 기존 요청하신 hero/fixed 위치의 이미지도 자동으로 찾아보도록 보강
+        var fallbackSrcs = [
+          imageSrc,
+          'images/hero/fixed.jpg',
+          'images/hero/fixed.png',
+          'images/hero/fixed.jpeg',
+          'images/hero/fixed.webp',
+          'images/hero/hero-fixed.jpg',
+          'images/hero/hero-fixed.png',
+          'images/hero/hero-fixed.webp',
+          'images/intro/between-greeting-story.jpg',
+          'images/intro/between-greeting-story.png',
+          'images/intro/between-greeting-story.webp'
+        ].filter(function (src, index, arr) {
+          return src && arr.indexOf(src) === index;
+        });
+
+        var tryIndex = 0;
+        img.onerror = function () {
+          tryIndex += 1;
+          if (tryIndex < fallbackSrcs.length) {
+            img.src = fallbackSrcs[tryIndex];
+          }
+        };
+
+        if (fallbackSrcs.length > 0) {
+          img.src = fallbackSrcs[0];
+        }
+
+        section.removeAttribute('hidden');
+        section.style.display = 'block';
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initIntroFixedImage);
+      } else {
+        initIntroFixedImage();
+      }
+      window.addEventListener('load', initIntroFixedImage);
+      window.setTimeout(initIntroFixedImage, 300);
+      window.setTimeout(initIntroFixedImage, 1000);
+    })();
+
+    // CONFIG.betweenGreetingStoryImage 설정값으로 기존 images/intro/between-greeting-story 이미지를 다시 표시합니다.
+    (function () {
+      function setCssVar(element, name, value) {
+        if (value !== undefined && value !== null && value !== '') {
+          element.style.setProperty(name, value);
+        }
+      }
+
+      function initBetweenGreetingStoryImage() {
+        if (typeof CONFIG === 'undefined') return;
+
+        var section = document.getElementById('betweenGreetingStoryImageSection');
+        var block = document.getElementById('betweenGreetingStoryImageBlock');
+        var img = document.getElementById('betweenGreetingStoryImage');
+        var greeting = document.getElementById('greeting');
+
+        var fixedImage = CONFIG.betweenGreetingStoryImage || {};
+        var imageSrc = fixedImage.src || fixedImage.image || fixedImage.path || 'images/intro/between-greeting-story.jpg';
+
+        if (!section || !block || !img || fixedImage.enabled === false) {
+          if (section) section.setAttribute('hidden', 'hidden');
+          return;
+        }
+
+        // 정확한 위치: 인사말 섹션 바로 아래, Love Story 섹션 바로 위
+        if (greeting && greeting.parentNode && section.previousElementSibling !== greeting) {
+          greeting.insertAdjacentElement('afterend', section);
+        }
+
+        img.alt = fixedImage.alt || '웨딩 사진';
+        img.loading = 'eager';
+        img.decoding = 'async';
+        img.setAttribute('fetchpriority', 'high');
+
+        setCssVar(block, '--intro-fixed-width', fixedImage.width || '100%');
+        setCssVar(block, '--intro-fixed-max-width', fixedImage.maxWidth || '100%');
+        setCssVar(block, '--intro-fixed-margin', fixedImage.margin || '0 auto');
+        setCssVar(block, '--intro-fixed-padding', fixedImage.padding || '0 24px');
+        setCssVar(block, '--intro-fixed-x', fixedImage.x || '0px');
+        setCssVar(block, '--intro-fixed-y', fixedImage.y || '0px');
+        setCssVar(block, '--intro-fixed-radius', fixedImage.radius || '0px');
+        setCssVar(img, '--intro-fixed-height', fixedImage.height || 'auto');
+        setCssVar(img, '--intro-fixed-fit', fixedImage.objectFit || 'contain');
+        setCssVar(img, '--intro-fixed-position', fixedImage.objectPosition || 'center center');
+
+        var fallbackSrcs = [
+          imageSrc,
+          'images/intro/between-greeting-story.jpg',
+          'images/intro/between-greeting-story.png',
+          'images/intro/between-greeting-story.jpeg',
+          'images/intro/between-greeting-story.webp',
+          'images/intro/image-intro-between-greeting-story.jpg',
+          'images/intro/image-intro-between-greeting-story.png',
+          'images/intro/image-intro-between-greeting-story.webp'
+        ].filter(function (src, index, arr) {
+          return src && arr.indexOf(src) === index;
+        });
+
+        var tryIndex = 0;
+        img.onerror = function () {
+          tryIndex += 1;
+          if (tryIndex < fallbackSrcs.length) {
+            img.src = fallbackSrcs[tryIndex];
+          }
+        };
+
+        if (fallbackSrcs.length > 0) {
+          img.src = fallbackSrcs[0];
+        }
+
+        section.removeAttribute('hidden');
+        section.style.display = 'block';
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initBetweenGreetingStoryImage);
+      } else {
+        initBetweenGreetingStoryImage();
+      }
+      window.addEventListener('load', initBetweenGreetingStoryImage);
+      window.setTimeout(initBetweenGreetingStoryImage, 300);
+      window.setTimeout(initBetweenGreetingStoryImage, 1000);
+    })();
+
+  </script>
+</body>
+</html>
