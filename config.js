@@ -80,8 +80,8 @@ const CONFIG = {
     tel: "043-834-8908",
     mapImage: "images/location/reception-map.jpg",
     mapLinks: {
-      kakao: "https://map.kakao.com/link/search/괴산농협예식장",
-      naver: "https://map.naver.com/p/search/괴산농협예식장"
+      kakao: "https://kko.to/4PEPj1a8u_",
+      naver: "https://naver.me/GT4iv4RB"
     }
   },
 
